@@ -48,7 +48,7 @@
 		    <groupId>info.cukes</groupId>
 		    <artifactId>gherkin</artifactId>
 		    <version>2.12.2</version>
-		    <scope>provided</scope>
+		    <scope>test</scope>
     </dependency>
     <dependency>
             <groupId>info.cukes</groupId>
@@ -61,7 +61,23 @@
 		    <artifactId>cucumber-core</artifactId>
 		    <version>1.2.5</version>
      </dependency>
-         
+     <dependency>
+	    <groupId>info.cukes</groupId>
+	    <artifactId>cucumber-picocontainer</artifactId>
+	    <version>1.2.5</version>
+	    <scope>test</scope>
+	</dependency>
+     <dependency>
+		<groupId>com.vimalselvam</groupId>
+		<artifactId>cucumber-extentsreport</artifactId>
+		<version>3.0.2</version>
+	</dependency>
+	<dependency>
+		<groupId>com.aventstack</groupId>
+		<artifactId>extentreports</artifactId>
+		<version>3.1.2</version>
+	</dependency>
+	
   </dependencies>
   
   <build>

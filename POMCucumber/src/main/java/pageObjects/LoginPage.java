@@ -1,9 +1,14 @@
 package pageObjects;
 
+import java.util.NoSuchElementException;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import dataProviders.ConfigFileReader;
+import managers.FileReaderManager;
+import testDataTypes.Login;
 
 public class LoginPage {
 	
@@ -12,25 +17,66 @@ public class LoginPage {
 	 
 	public LoginPage(WebDriver driver){
 		this.driver = driver;
-		
+		prop = new ConfigFileReader();
 	}
+	
 	
 	public  void navigateTo_LoginPage(){
-		prop = new ConfigFileReader("Configuration.properties");
-		driver.get(prop.CONFIG.getProperty("appUrl"));
+		driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
 	}
 	
-	public  WebElement login_username(WebDriver driver){	
-		prop = new ConfigFileReader();
-		return driver.findElement(prop.getObjectLocator(prop.CLASS.getProperty("username")));
+	// base methods  
+	public WebElement returnElement(By by)
+	{
+		return driver.findElement(by);
 	}
 	
-	public  WebElement login_password(WebDriver driver){
-		return driver.findElement(prop.getObjectLocator(prop.CLASS.getProperty("password")));
+	// base methods  
+	public void sendkeys(By by,String str)
+	{
+		driver.findElement(by).sendKeys(str);
 	}
 	
-	public  WebElement login_button(WebDriver driver){
-		return	driver.findElement(prop.getObjectLocator(prop.CLASS.getProperty("loginbtn")));
+	// base methods  
+	public void click(By by){
+		try{
+		driver.findElement(by).click();
+		}catch(NoSuchElementException e){
+			e.getMessage();
+		}
+	}
+	
+	//base methods 
+	public String getTextOfElement(By by)
+	{		
+		return	driver.findElement(by).getText();	 
+	}
+	
+	
+	public  void enter_login_username(String username){	
+		 sendkeys(prop.getObjectLocator(prop.CONFIG.getProperty("username")), username);
+		//prop.CONFIG.getProperty("unm")
+	}
+	
+	public  void enter_login_password(String password){
+		 sendkeys(prop.getObjectLocator(prop.CONFIG.getProperty("password")), password);
+		//prop.CONFIG.getProperty("pwd")
+	}
+	
+	public  void click_login_button(){
+		click(prop.getObjectLocator(prop.CONFIG.getProperty("loginbtn")));
+		
+	}
+		
+	public void fill_logindetails(Login log){
+		enter_login_username(log.uname);
+		enter_login_password(log.pass);
+	}
+	
+	public String verify_dashboard(){
+		
+		String title = getTextOfElement(By.xpath(".//*[@id='page-content-wrapper']/div/div[1]/header/h2"));
+		return title;
 	}
 	
 }
