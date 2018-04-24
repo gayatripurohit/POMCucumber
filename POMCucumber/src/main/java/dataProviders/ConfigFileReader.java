@@ -1,6 +1,7 @@
 package dataProviders;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Properties;
 import org.openqa.selenium.By;
 import enums.DriverType;
@@ -8,30 +9,30 @@ import enums.DriverType;
 public class ConfigFileReader {
 
 	public Properties CONFIG=null;
-	private final String propertyFilePath= "\\configs\\Configuration.properties";
+//	private final String propertyFilePath= "\\configs\\Configuration.properties";
 	
 	FileInputStream objfile;
 	String locatorType, locatorValue , driverPath ;
 	By locator;
 	
-//	public ConfigFileReader(){
-		
-		//className = new Exception().getStackTrace()[1].getClassName();
-		//fileName = className.split("\\.")[1];
-		
-//			CLASS=new Properties();	
-//			try
-//			{
-//				 objfile1 = new FileInputStream(System.getProperty("user.dir")+"\\src\\main\\resources\\ObjectRepository\\"+fileName+".properties");
-//				 CLASS.load(objfile1);
-//			}
-//			catch (IOException e) {			
-//				e.printStackTrace();
-//			 	}
-//		
-//	}
-	
 	public ConfigFileReader(){
+		
+		String className = new Exception().getStackTrace()[2].getClassName();
+		String fileName = className.split("\\.")[1];
+		
+		CONFIG=new Properties();	
+			try
+			{
+				 objfile = new FileInputStream(System.getProperty("user.dir")+"\\src\\main\\resources\\ObjectRepository\\"+fileName+".properties");
+				 CONFIG.load(objfile);
+			}
+			catch (IOException e) {			
+				e.printStackTrace();
+			 	}
+		
+	}
+	
+	public ConfigFileReader(String propertyFilePath){
 	
 		CONFIG=new Properties();	
 		try
@@ -65,6 +66,17 @@ public class ConfigFileReader {
 		else throw new RuntimeException("implicitlyWait not specified in the Configuration.properties file.");		
 	}
 	
+	
+	
+	public String getPropertyValue(String propertyName) {
+		String propertyValue = CONFIG.getProperty(propertyName);
+		if(propertyValue != null) return propertyValue;
+		else throw new RuntimeException(propertyName + " not specified in the Configuration.properties file.");
+	}
+	
+	
+	
+	
 	public String getApplicationUrl() {
 		String url = CONFIG.getProperty("appUrl");
 		if(url != null) return url;
@@ -84,43 +96,6 @@ public class ConfigFileReader {
 		String windowSize = CONFIG.getProperty("windowMaximize");
 		if(windowSize != null) return Boolean.valueOf(windowSize);
 		return true;
-	}
-	
-	public By getObjectLocator(String locatorProperty)
-	{
-		 locatorType = locatorProperty.split(":")[0];
-		 locatorValue = locatorProperty.split(":")[1];
-
-		 locator = null;
-		switch(locatorType.toLowerCase())
-		{
-		case "id":
-			locator = By.id(locatorValue);
-			break;
-		case "name":
-			locator = By.name(locatorValue);
-			break;
-		case "classname":
-			locator = By.className(locatorValue);
-			break;
-		case "cssselector":
-			locator = By.cssSelector(locatorValue);
-			break;
-		case "xpath":
-			locator = By.xpath(locatorValue);
-			break;
-		case "linktext":
-			locator = By.linkText(locatorValue);
-			break;
-		case "partiallinktext":
-			locator = By.partialLinkText(locatorValue);
-			break;
-		case "tagname":
-			locator = By.tagName(locatorValue);
-			break;	
-		
-		}
-		return locator;
 	}
 	
 

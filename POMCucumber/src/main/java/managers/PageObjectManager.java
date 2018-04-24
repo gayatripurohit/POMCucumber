@@ -2,6 +2,7 @@ package managers;
 
 import org.openqa.selenium.WebDriver;
 
+import cucumber.TestContext;
 import pageObjects.LoginPage;
 
 
@@ -9,13 +10,14 @@ import pageObjects.LoginPage;
 public class PageObjectManager {
 
 	private WebDriver driver;
-	private LoginPage login;
+	private LoginPage loginPage;
+	private TestContext context;
 	
 	public PageObjectManager(WebDriver driver){
 		this.driver = driver;
 	}
 	
 	public LoginPage getLoginPage(){
-		return (login == null) ? login = new LoginPage(driver): login;
+		return (loginPage == null) ? loginPage = new LoginPage(context): loginPage;
 	}
 }

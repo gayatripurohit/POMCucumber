@@ -11,8 +11,7 @@ public class TestContext {
 	
 	public TestContext(){
 		webDriverManager = new WebDriverManager();
-		pageObjectManager = new PageObjectManager(webDriverManager.getDriver());
-		
+		pageObjectManager = new PageObjectManager(webDriverManager.getDriver());		
 	}
 	
 	public WebDriverManager getWebDriverManager() {
